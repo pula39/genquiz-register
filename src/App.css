@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.image-container {
+  width: 100%; /* 최대 너비 설정 */
+  height: 300px; /* 최대 너비 설정 */
+  margin: 0px;
+  overflow: hidden; /* 넘치는 부분 숨김 처리 */
+  object-fit: contain;
+}
+
+.image {
+  width: 100%; /* 이미지 너비 100%로 설정 */
+  height: 100%; /* 이미지 높이 자동 조정 */
+  object-fit: contain; /* 이미지를 비율을 유지하며 칸에 꽉 채우도록 조절 */
+}

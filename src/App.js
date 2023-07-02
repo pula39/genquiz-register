@@ -134,7 +134,7 @@ const updateNestedField = (obj, path, value) => {
   return {...obj};
 };
 
-const baseUrl = "http://ec2-3-39-106-132.ap-northeast-2.compute.amazonaws.com:8080/"
+const baseUrl = "https://genquiz-https-306304969.ap-northeast-2.elb.amazonaws.com"
 // const baseUrl = "http://localhost:8080"
 
 function App() {

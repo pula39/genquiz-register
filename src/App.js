@@ -148,6 +148,38 @@ function App() {
     setState(prevState => { return {...prevState, ...updatedState}});
   };
 
+  const handleReset = (e) => {
+    // console.log(name, value);
+    setState((prevState) => {
+      return { questionItem: makeQuestionItem() };
+    });
+  };
+
+  const handleLoad = (e) => {
+    setProgressState("LOADING")
+
+    const userInput = prompt("Please enter question item seq:");
+
+    if (userInput === null) {
+      alert("You canceled the prompt.");
+      return
+    }
+    
+
+    axios.get(baseUrl + '/question-items/' + userInput)
+      .then(response => {
+        // 요청이 성공한 경우 처리할 로직 작성
+        console.log(response);
+        setState({...state, questionItem: response.data})
+        setProgressState("SUCCESS")
+      })
+      .catch(error => {
+        // 요청이 실패한 경우 처리할 로직 작성
+        console.error(error);
+        setProgressState("FAIL(Check dev console)")
+      });
+  };
+
   const handleImageChange = (imageData) => {
     const updatedState = updateNestedField(
       state,
@@ -162,20 +194,40 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setProgressState("SENDING")
-
-    axios.post(baseUrl + '/question-items', state.questionItem)
-      .then(response => {
-        // 요청이 성공한 경우 처리할 로직 작성
-        console.log(response);
-        setState({...state, questionItem: response.data})
-        setProgressState("SUCCESS")
-      })
-      .catch(error => {
-        // 요청이 실패한 경우 처리할 로직 작성
-        console.error(error);
-        setProgressState("FAIL(Check dev console)")
-      });
+    if (isNaN(parseInt(state.questionItem.questionItemSeq)) === false) {
+      setProgressState("PATCHING");
+      axios
+        .patch(
+          baseUrl + "/question-items/" + state.questionItem.questionItemSeq,
+          state.questionItem
+        )
+        .then((response) => {
+          // 요청이 성공한 경우 처리할 로직 작성
+          console.log(response);
+          setState({ ...state, questionItem: response.data });
+          setProgressState("SUCCESS");
+        })
+        .catch((error) => {
+          // 요청이 실패한 경우 처리할 로직 작성
+          console.error(error);
+          setProgressState("FAIL(Check dev console)");
+        });
+    } else {
+      setProgressState("POSTING");
+      axios
+        .post(baseUrl + "/question-items", state.questionItem)
+        .then((response) => {
+          // 요청이 성공한 경우 처리할 로직 작성
+          console.log(response);
+          setState({ ...state, questionItem: response.data });
+          setProgressState("SUCCESS");
+        })
+        .catch((error) => {
+          // 요청이 실패한 경우 처리할 로직 작성
+          console.error(error);
+          setProgressState("FAIL(Check dev console)");
+        });
+    }
   };
 
   function replacer(key, value) {
@@ -190,6 +242,13 @@ function App() {
 
   return (
     <div className="App">
+      <button type="submit" onClick={handleReset}>
+         문제 새로 출제 
+      </button>
+      <button type="submit" onClick={handleLoad}>
+         문제  불러오기 
+      </button>
+      <pre>{progress}</pre>
       <div>
         <label htmlFor="regUserId">등록하는 유저의 이름</label>
         <input

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 function ClipboardImageToBase64(props) {
-  const [imageData, setImageData] = useState('');
-  const [converted, setConverted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handlePaste = (event) => {
@@ -32,8 +30,6 @@ function ClipboardImageToBase64(props) {
 
     reader.onload = (e) => {
       const base64Image = e.target.result;
-      setImageData(base64Image);
-      setConverted(true);
       setErrorMessage('');
 
       props.onValueChange(base64Image)
@@ -44,16 +40,34 @@ function ClipboardImageToBase64(props) {
     reader.readAsDataURL(file);
   };
 
+  // const loadBase64 = (base64ImageStr) => {
+  //   if((base64ImageStr + '').length< 10) {
+  //     return;
+  //   }
+
+  //   const base64Image = base64ImageStr;
+  //   setImageData(base64Image);
+  //   setConverted(true);
+  //   setErrorMessage('');
+
+  //   console.log("From Image loaded")
+  // };
+
+  // loadBase64(props.base64Image)
+
   const reset = () => {
-    setImageData('');
-    setConverted(false);
     setErrorMessage('');
 
     props.onValueChange('')
   };
 
+  var imageData = props.base64Image
+  var converted = (imageData === null || imageData === '' || imageData === undefined) === false
+
+
   const ImageGuide = ({ imageData }) => {
-    if (imageData === null || imageData === '') {
+    console.log("ImageData", imageData)
+    if (converted === false) {
       return (<div>
         <textarea
           onPaste={handlePaste}
@@ -69,9 +83,9 @@ function ClipboardImageToBase64(props) {
 
   return (
     <div className="image-container">
-      <ImageGuide imageData={imageData} />
+      <ImageGuide imageData={props.base64Image} />
       {errorMessage && <p className="error">{errorMessage}</p>}
-      {converted && <img src={imageData} alt="Converted" className="image" />}
+      {converted && <img src={props.base64Image} alt="Converted" className="image" />}
     </div>
   );
 }

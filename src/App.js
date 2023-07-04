@@ -3,11 +3,12 @@ import axios from 'axios';
 import ClipboardImageToBase64 from './ClipboardImageToBase64';
 
 import './App.css'
+import TableWithPagination from './TableWithPagination';
 
 const categoryList = [
   { id: 'category_story', name: 'STORY', label: '스토리 문제' },
   { id: 'category_leveling', name: 'LEVELING', label: '육성 문제' },
-  { id: 'category_meta', name: 'META', label: '메타데이터 문제' },
+  { id: 'category_meta', name: 'META_INFO', label: '메타데이터 문제' },
 ];
 
 const inputs = [
@@ -134,8 +135,8 @@ const updateNestedField = (obj, path, value) => {
   return {...obj};
 };
 
-const baseUrl = "https://genquiz-https-306304969.ap-northeast-2.elb.amazonaws.com"
-// const baseUrl = "http://localhost:8080"
+// const baseUrl = "https://genquiz-https-306304969.ap-northeast-2.elb.amazonaws.com"
+const baseUrl = "http://localhost:8080"
 
 function App() {
   const [state, setState] = useState({questionItem: makeQuestionItem()}); // JSON 필드 데이터를 저장할 상태 변수
@@ -243,10 +244,10 @@ function App() {
   return (
     <div className="App">
       <button type="submit" onClick={handleReset}>
-         문제 새로 출제 
+        문제 새로 출제
       </button>
       <button type="submit" onClick={handleLoad}>
-         문제  불러오기 
+        문제 불러오기
       </button>
       <pre>{progress}</pre>
       <div>
@@ -283,7 +284,10 @@ function App() {
 
       <div>
         <label htmlFor="askText">문제에 사용될 이미지(Optional)</label>
-        <ClipboardImageToBase64 onValueChange={handleImageChange} />
+        <ClipboardImageToBase64
+          onValueChange={handleImageChange}
+          base64Image={state.questionItem?.contentDataJson?.askImg}
+        />
       </div>
 
       <label htmlFor="optionshelp">정답인 선지를 클릭해주세요</label>
@@ -302,6 +306,11 @@ function App() {
       <pre>
         <code>{JSON.stringify(state, replacer, 2)}</code>
       </pre>
+
+      <TableWithPagination
+        baseUrl={baseUrl}
+        onClickItem={(item) => setState({ ...state, questionItem: item })}
+      />
     </div>
   );
 }

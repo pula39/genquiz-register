@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/genquiz-register/static/css/main.90cc35df.css",
-    "main.js": "/genquiz-register/static/js/main.3a98b5b3.js",
+    "main.js": "/genquiz-register/static/js/main.d4d34436.js",
     "static/js/787.2f33722e.chunk.js": "/genquiz-register/static/js/787.2f33722e.chunk.js",
     "index.html": "/genquiz-register/index.html",
     "main.90cc35df.css.map": "/genquiz-register/static/css/main.90cc35df.css.map",
-    "main.3a98b5b3.js.map": "/genquiz-register/static/js/main.3a98b5b3.js.map",
+    "main.d4d34436.js.map": "/genquiz-register/static/js/main.d4d34436.js.map",
     "787.2f33722e.chunk.js.map": "/genquiz-register/static/js/787.2f33722e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90cc35df.css",
-    "static/js/main.3a98b5b3.js"
+    "static/js/main.d4d34436.js"
   ]
 }
